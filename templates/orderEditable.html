@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}{% load static %}
+
+{% block title %}Order:{{ order.id }}{% endblock title %}
+
+{% block body %}
+    <div class="container my-3">
+        <h1 class="text-center">รายละเอียดของข้อมูล</h1>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="formGroupExampleInput">รหัสการไฟฟ้า</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="รหัสการไฟฟ้า" value="{{ order.pea_branch }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">ชื่อการไฟฟ้า</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="ชื่อการไฟฟ้า" value="{{ order.pea_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">ชื่อ</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="ชื่อ" value="{{ order.firstname }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">นามสกุล</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="นามสกุล" value="{{ order.lastname }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">รหัสพนักงาน</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="รหัสพนักงาน" value="{{ order.id_person }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">เบอร์โทรศัพท์</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="เบอร์โทรศัพท์" value="{{ order.phone }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">สินค้า</label>
+                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="สินค้า" value="{{ order.product }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">จำนวน</label>
+                <input type="number" min="0" class="form-control" id="formGroupExampleInput2" placeholder="จำนวน" value="{{ order.order }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">ที่อยู่ในการจัดส่ง</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly>{{ order.address }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">สถานะ</label>
+                <select name="status" class="form-control" id="exampleFormControlSelect1">
+                    <option value="{{ order.status }}" selected disabled hidden>{{ order.status }}</option>
+                    <option value="pending">pending</option>
+                    <option value="finished">finished</option>
+                    <option value="missing">missing</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-success">บันทึกข้อมูล</button>
+                <a href="{% url 'orderDelete' order.id %}">
+                    <button type="button" class="btn btn-outline-danger">ลบข้อมูล</button>
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock body %}

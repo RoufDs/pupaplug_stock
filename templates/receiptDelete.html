@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}{% load static %}
+
+{% block title %}Order:{{ receipt.id }}{% endblock title %}
+
+{% block body %}
+    <div class="container my-3">
+        <h1 class="text-center">ยืนยันการลบข้อมูล</h1>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="formGroupExampleInput">รหัสการไฟฟ้า</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="รหัสการไฟฟ้า" value="{{ receipt.pea_branch }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">ชื่อการไฟฟ้า</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="ชื่อการไฟฟ้า" value="{{ receipt.pea_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">ชื่อ</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="ชื่อ" value="{{ receipt.firstname }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">นามสกุล</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="นามสกุล" value="{{ receipt.lastname }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">รหัสพนักงาน</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="รหัสพนักงาน" value="{{ receipt.id_person }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">เบอร์โทรศัพท์</label>
+                <input type="text" name="pea_name" class="form-control" id="formGroupExampleInput2" placeholder="เบอร์โทรศัพท์" value="{{ receipt.phone }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">สินค้า</label>
+                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="สินค้า" value="{{ receipt.product }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">จำนวน</label>
+                <input name="order_sold" type="number" min="0" class="form-control" id="formGroupExampleInput2" placeholder="จำนวน" value="{{ receipt.order_sold }}" readonly>
+            </div>            
+            <button type="submit" class="btn btn-danger">ลบข้อมูล</button>            
+        </form>
+        <hr>
+        <img src="{{ receipt.bill.url }}" alt="..." class="img-thumbnail">
+    </div>
+{% endblock body %}

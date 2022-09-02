@@ -1,0 +1,188 @@
+{% extends 'layout.html' %}{% load static %}
+
+{% block title %}Admin{% endblock title %}
+
+{% block nav %}
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">PUPAPLUG</span>
+        {% if user.is_authenticated %}
+            <a class="text-muted" href="{% url 'admin_logout' %}">ออกจากระบบ</a>
+        {% endif %}
+    </nav>
+{% endblock nav %}
+
+{% block body %}
+
+{% if messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>ผลการดำเนินการ</strong>
+        {% for messages in messages %}
+            {{ messages }}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+    <div class="container mt-3">
+        <table class="table table-hover">
+            <h6 class="header">สถานะของสินค้า</h6>
+            <thead>
+                <tr>
+                    <th scope="col">สินค้า</th>
+                    <th scope="col">คลัง</th>
+                    <th scope="col">ส่วนกลาง</th>
+                    <th scope="col">ยอดขาย</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product %}
+                    <tr>
+                        <th scope="row">{{ product.name }}</th>
+                        <td>{{ product.countInStock }}</td>
+                        <td>{{ product.central }}</td>
+                        <td>{{ product.circulation }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">รหัสการไฟฟ้า</a>
+                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">สินค้า</a>
+                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">สถานะการสั่งซื้อ</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">ยืนยันใบเสร็จ</a>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                        <ul class="list-group">
+                            {% if pea_branch %}
+                                {% for pea_branch in pea_branch %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ pea_branch }}
+                                        <div>
+                                            <a href="{% url 'peaEditable' pea_branch.id %}">
+                                                <button type="button" class="btn btn-outline-warning">แก้ไข</button>
+                                            </a>                    
+                                            <a href="{% url 'peaDelete' pea_branch.id %}" class="ml-3">
+                                                <button type="button" class="btn btn-outline-danger">ลบ</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}        
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                        <ul class="list-group">
+                            {% if product %}
+                                {% for product in product %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ product }}
+                                        <div>
+                                            <a href="{% url 'productEditable' product.id %}">
+                                                <button type="button" class="btn btn-outline-warning">แก้ไข</button>
+                                            </a>                    
+                                            <a href="{% url 'productDelete' product.id %}" class="ml-3">
+                                                <button type="button" class="btn btn-outline-danger">ลบ</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}        
+                            {% endif %}    
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Finished
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% if pending %}
+                                            {% for pending in pending  %}
+                                                <a class="dropdown-item" href="{% url 'orderEditable' pending.id %}">{{ pending }}</a>                                        
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if pending %}
+                                    {% for pending in pending %}
+                                        {% if forloop.last %}
+                                            <span class="badge badge-primary badge-pill">{{ forloop.counter }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}                                                       
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Finished
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% if finished %}
+                                            {% for finished in finished  %}
+                                                <a class="dropdown-item" href="{% url 'orderEditable' finished.id %}">{{ finished }}</a>                                        
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if finished %}
+                                    {% for finished in finished %}
+                                        {% if forloop.last %}
+                                            <span class="badge badge-primary badge-pill">{{ forloop.counter }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Missing
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% if missing %}
+                                            {% for missing in missing  %}
+                                                <a class="dropdown-item" href="{% url 'orderEditable' missing.id %}">{{ missing }}</a>                                        
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if missing %}
+                                    {% for missing in missing %}
+                                        {% if forloop.last %}
+                                            <span class="badge badge-primary badge-pill">{{ forloop.counter }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </li>                                                        
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                        <ul class="list-group">
+                            {% if receipt %}
+                                {% for receipt in receipt %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ receipt }}
+                                        <div>
+                                            <a href="{% url 'receiptEditable' receipt.id %}">
+                                                <button type="button" class="btn btn-outline-warning">แก้ไข</button>
+                                            </a>                    
+                                            <a href="{% url 'receiptDelete' receipt.id %}" class="ml-3">
+                                                <button type="button" class="btn btn-outline-danger">ลบ</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}        
+                            {% endif %}    
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

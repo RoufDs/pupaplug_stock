@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}{% load static %}{% load crispy_forms_tags %}
+
+{% block title %}Order{% endblock title %}
+
+{% block link %}{% endblock link %}
+
+{% block body %}
+    {% if messages %}
+        <div class="alert alert-warning" role="alert">
+            {% for messages in messages %}
+                {{ messages }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container mt-3 mb-3">       
+        <h1 class="text-center">ฟอร์มยื่นใบเสร็จ</h1>
+        <hr class="w-100">
+        <div class="w-50 m-auto">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.pea_branch|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.pea_name|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.firstname|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.lastname|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.id_person|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.phone|as_crispy_field }}
+                    </div>
+                </div>
+                {{ form.product|as_crispy_field }}
+                {{ form.bill|as_crispy_field }}
+                {{ form.order_sold|as_crispy_field }}
+                <button type="submit" class="btn btn-success">ส่งข้อมูล</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

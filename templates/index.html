@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block link %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% endblock link %}
+
+{% block body %}
+    <div class="container mt-3">
+        <table class="table table-hover">
+            <h6 class="header">สถานะของสินค้า</h6>
+            <thead>
+                <tr>
+                    <th scope="col">สินค้า</th>
+                    <th scope="col">คลัง</th>
+                    <th scope="col">ส่วนกลาง</th>
+                    <th scope="col">ยอดขาย</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product %}
+                    <tr>
+                        <th scope="row">{{ product.name }}</th>
+                        <td>{{ product.countInStock }}</td>
+                        <td>{{ product.central }}</td>
+                        <td>{{ product.circulation }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <table class="table table-hover">
+            <h6 class="header">อันดับยอดขาย</h6>
+            <thead>
+                <tr>
+                    <th scope="col">อันดับ</th>
+                    <th scope="col">รหัสการไฟฟ้า</th>
+                    <th scope="col">สินค้า</th>
+                    <th scope="col">ยอดขาย</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pea_branch in pea_branch %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ pea_branch.pea_branch }}</td>
+                        <td>{{ pea_branch.product }}</td>
+                        <td>{{ pea_branch.circulation }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock body %}
+
+{% block script %}{% endblock script %}
